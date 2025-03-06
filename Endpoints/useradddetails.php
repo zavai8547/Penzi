@@ -17,7 +17,7 @@ if (json_last_error() !== JSON_ERROR_NONE) {
     exit();
 }
 
-// Validate required fields
+
 if (!isset(
     $data['user_id'],
     $data['education_level'],
@@ -30,7 +30,7 @@ if (!isset(
     exit();
 }
 
-// Extract data
+
 $user_id = intval($data['user_id']);
 $education = $data['education_level'];
 $profession = $data['profession'];
@@ -39,7 +39,7 @@ $religion = $data['religion'];
 $ethnicity = $data['ethnicity'];
 
 try {
-    // SQL statement (verify column names match your database)
+    
     $sql = "
         INSERT INTO user_additional_details 
         (UserID, EducationLevel, Profession, MaritalStatus, Religion, Ethnicity, Update_at) 
