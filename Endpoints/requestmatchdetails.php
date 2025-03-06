@@ -11,12 +11,12 @@ if (empty($phoneNumber)) {
 }
 
 try {
-    // Check database connection
+
     if ($conn->connect_error) {
         throw new Exception("Database connection failed: " . $conn->connect_error);
     }
 
-    // Verify SQL query syntax and table/column names
+    
     $stmt = $conn->prepare("
         SELECT 
             u.name, u.Age, u.County, u.Town,
@@ -26,7 +26,7 @@ try {
         WHERE u.PhoneNumber = ?
     ");
 
-    // Critical: Check if prepare() succeeded
+    
     if ($stmt === false) {
         throw new Exception("SQL Error: " . $conn->error);
     }

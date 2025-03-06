@@ -26,7 +26,7 @@ try {
     $description = $result->fetch_assoc()['SelfDescription'] ?? null;
     $stmt->close();
 
-    // Log interaction in matches table if requester provided
+    
     if (!empty($requester_phone)) {
         // Get UserIDs
         $stmt = $conn->prepare("

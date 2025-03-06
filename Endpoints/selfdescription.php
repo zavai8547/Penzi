@@ -17,7 +17,7 @@ if (json_last_error() !== JSON_ERROR_NONE) {
     exit();
 }
 
-// Validate required fields
+
 if (!isset($data['user_id'], $data['description'])) {
     echo json_encode(["error" => "Missing required fields"]);
     exit();
@@ -27,7 +27,7 @@ $user_id = intval($data['user_id']);
 $description = $data['description'];
 
 try {
-    // Update only the SelfDescription field
+    
     $stmt = $conn->prepare("
         UPDATE user_additional_details 
         SET SelfDescription = ?, Update_at = NOW() 
