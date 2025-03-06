@@ -11,7 +11,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 
 $data = json_decode(file_get_contents("php://input"), true);
 
-// Validate input
+
 if (!isset($data['response'], $data['request_id'], $data['target_phone'])) {
     echo json_encode(["error" => "Missing required fields"]);
     exit();
@@ -27,7 +27,7 @@ if (!in_array($response, ['YES', 'NO'])) {
 }
 
 try {
-    // Get target user's ID
+
     $stmt = $conn->prepare("SELECT UserID FROM users WHERE PhoneNumber = ?");
     $stmt->bind_param("s", $target_phone);
     $stmt->execute();
@@ -40,7 +40,7 @@ try {
         exit();
     }
 
-    // Get original request details
+    
     $stmt = $conn->prepare("
         SELECT UserID AS requester_id 
         FROM matchrequests 
@@ -57,7 +57,7 @@ try {
     }
     $requester_id = $request['requester_id'];
 
-    // Store confirmation
+    
     $stmt = $conn->prepare("
         INSERT INTO userconfirmations 
         (request_id, UserID, ConfirmationStatus, Timestamp)
@@ -82,7 +82,7 @@ try {
         $check_stmt->close();
     }
 
-    // Prepare response
+
     if ($is_mutual) {
         // Get requester's contact info
         $contact_stmt = $conn->prepare("

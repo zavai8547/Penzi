@@ -68,7 +68,7 @@ try {
     // Determine target gender
     $target_gender = ($requester_gender === 'Male') ? 'Female' : 'Male';
 
-    // Get total matches
+    
     $count_stmt = $conn->prepare("
         SELECT COUNT(*) AS total 
         FROM users 
@@ -82,7 +82,7 @@ try {
     $total = $count_stmt->get_result()->fetch_assoc()['total'];
     $count_stmt->close();
 
-    // Get 3 sample matches
+    
     $match_stmt = $conn->prepare("
         SELECT name, Age, PhoneNumber 
         FROM users 
@@ -97,7 +97,7 @@ try {
     $matches = $match_stmt->get_result()->fetch_all(MYSQLI_ASSOC);
     $match_stmt->close();
 
-    // Format response
+    
     $gender_term = ($target_gender === 'Female') ? 'ladies' : 'men';
     $response = "We have $total $gender_term who match your choice! ";
     $response .= "We will send you details of 3 of them shortly.\n\n";

@@ -11,14 +11,14 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 
 $data = json_decode(file_get_contents("php://input"), true);
 
-// Validate input
+
 if (!isset($data['requester_phone'], $data['target_phone'])) {
     echo json_encode(["error" => "Missing phone numbers"]);
     exit();
 }
 
 try {
-    // Fetch requester's details (name, age, county)
+    
     $stmt = $conn->prepare("
         SELECT name, Age, County 
         FROM users 
@@ -34,7 +34,7 @@ try {
         exit();
     }
 
-    // Fetch target user's name
+    // get users name 
     $stmt = $conn->prepare("SELECT name FROM users WHERE PhoneNumber = ?");
     $stmt->bind_param("s", $data['target_phone']);
     $stmt->execute();
@@ -46,7 +46,7 @@ try {
         exit();
     }
 
-    // Build the SMS message
+    
     $message = sprintf(
         "Hi %s, a person called %s is interested in you and requested your details.\n"
         . "He is aged %d based in %s.\n"
@@ -57,7 +57,7 @@ try {
         $requester['County']
     );
 
-    // Return the SMS content (simulate sending)
+    
     echo json_encode([
         "message" => "Notification sent to target user",
         "sms_content" => $message

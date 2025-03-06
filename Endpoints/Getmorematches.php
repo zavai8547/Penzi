@@ -11,13 +11,13 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 
 $data = json_decode(file_get_contents("php://input"), true);
 
-// Validate input
+
 if (!isset($data['trigger']) || $data['trigger'] !== "NEXT") {
     echo json_encode(["error" => "Invalid trigger"]);
     exit();
 }
 
-// Optional filters
+
 $age = isset($data['age']) ? intval($data['age']) : null;
 $town = isset($data['town']) ? $data['town'] : null;
 
@@ -27,7 +27,7 @@ $limit = 3;
 $offset = ($page - 1) * $limit;
 
 try {
-    // Build the SQL query dynamically
+    
     $query = "SELECT Name, Age, Gender, County, Town, PhoneNumber AS Phone FROM users WHERE 1=1";
     $params = [];
     $types = "";
