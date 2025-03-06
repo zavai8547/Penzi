@@ -1,0 +1,57 @@
+http://localhost/PENZI/Endpoints/userregistration.php
+   {
+    "Name": "Mercy Wanjiku",
+    "Age": 21,
+    "Gender": "Female",
+    "County": "Nairobi",
+    "Town": "Westlands",
+    "Phone": "0785159029"
+}
+
+http://localhost/PENZI/Endpoints/useradddetails.php   
+            {
+    "user_id": 4,
+    "education_level": "Diploma",
+    "profession": "Nurse",
+    "marital_status": "Married",
+    "religion": "Muslim",
+    "ethnicity": "African"
+}
+
+http://localhost/PENZI/Endpoints/selfdescription.php
+{
+    "user_id": 4,
+    "description": "I am a nurse dedicated to saving peoples lives with 5 years of experience"
+}
+
+ http://localhost/PENZI/Endpoints/matchrequests.php
+ {
+  "min_age": 18,
+  "max_age": 35,
+  "town": "Ruiru",
+  "requester_phone": "1234567890"
+}
+  http://localhost/PENZI/Endpoints/getmorematches.php
+  {
+    "trigger": "NEXT",
+    "page": 2,
+    "age": 28,
+    "town": "Juja"
+}
+http://localhost/PENZI/Endpoints/requestmatchdetails.php?phoneNumber=0720304050
+
+
+
+ http://localhost/PENZ/Endpoints/notify-interest.php
+{
+    "requester_phone": "072295757",
+    "target_phone": "0700112233"
+}
+
+http://localhost/PENZI/Endpoints/confirmationAPI.php
+{
+  "request_id": 1,
+  "target_phone": "0785159029",
+  "response": "NO"
+}
+http://localhost/PENZi/Endpoints/selfdescriptionretreival.php?phoneNumber=0788888888&requester=072295757
