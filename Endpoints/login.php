@@ -1,10 +1,10 @@
 <?php
-require_once '../config/jwt_helper.php'; // Include JWT functions
+require_once '../config/jwt_helper.php'; 
 
 header('Content-Type: application/json');
 
 $api_key = $_POST['api_key'] ?? ''; // Get API key from request
-$valid_api_key = "your_secure_api_key_here"; // Define a fixed API key
+$valid_api_key = "Rodney"; // Define a fixed API key
 
 if ($api_key !== $valid_api_key) {
     echo json_encode(["error" => "Invalid API Key"]);
@@ -14,8 +14,8 @@ if ($api_key !== $valid_api_key) {
 // Generate JWT token
 $payload = [
     "iss" => "PenziAPI",
-    "exp" => time() + (60 * 60), // Token expires in 1 hour
-    "scope" => "protected" // Optional scope
+    "exp" => time() + (60 * 60), 
+    "scope" => "protected"
 ];
 
 $token = generate_jwt($payload);
