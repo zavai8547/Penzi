@@ -1,7 +1,10 @@
 <?php
 require '../config/db.php';
+require '../auth_middleware.php';
 header("Content-Type: application/json");
 header("Access-Control-Allow-Origin: *");
+
+$user = authenticate();
 
 $phoneNumber = $_GET['phoneNumber'] ?? '';
 

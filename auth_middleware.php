@@ -1,5 +1,5 @@
 <?php
-require 'jwt_helper.php';
+require '../config/jwt_helper.php';
 
 function authenticate() {
     $secret = 'your-256-bit-secret'; // Replace with env variable

@@ -1,8 +1,11 @@
 <?php
 require '../config/db.php';
+require '../auth_middleware.php';
 header("Content-Type: application/json");
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: POST");
+
+$user = authenticate();
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     echo json_encode(["error" => "Invalid request method"]);
