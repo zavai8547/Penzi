@@ -3,17 +3,17 @@ require '../config/db.php';
 header("Content-Type: application/json");
 header("Access-Control-Allow-Origin: *");
 
-// Get phone number from URL and requester from query params
-$target_phone = $_GET['phoneNumber'] ?? '';
-$requester_phone = $_GET['requester'] ?? ''; // Added requester parameter
 
-if (empty($target_phone)) { // Added missing closing parenthesis
+$target_phone = $_GET['phoneNumber'] ?? '';
+$requester_phone = $_GET['requester'] ?? ''; 
+
+if (empty($target_phone)) { 
     echo json_encode(["error" => "Target phone number is required"]);
     exit();
 }
 
 try {
-    // Get target user's self-description
+    //Get target user's self-description
     $stmt = $conn->prepare("
         SELECT a.SelfDescription 
         FROM user_additional_details a
