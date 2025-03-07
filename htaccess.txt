@@ -59,3 +59,7 @@ http://localhost/PENZi/Endpoints/selfdescriptionretreival.php?phoneNumber=078888
 
 
   "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjEsImlhdCI6MTc0MTMyNTA4NCwiZXhwIjoxNzQzOTE3MDg0fQ.Tk8CTCsADc7pqh4_sT3AiLXEw1UsZjUXUaBenBLPfNY"
+
+  git add .
+git commit -m "Updated login, middleware, and JWT helper"
+git push origin main
