@@ -1,34 +1,38 @@
 <?php
-require '../config/jwt_helper.php';
+require_once 'C:/xampp/htdocs/penzi/config/jwt_helper.php';
+
+
+function getAuthorizationHeader() {
+    if (isset($_SERVER['Authorization'])) {
+        return $_SERVER['Authorization'];
+    } elseif (isset($_SERVER['HTTP_AUTHORIZATION'])) { // Nginx or FastCGI
+        return $_SERVER['HTTP_AUTHORIZATION'];
+    } elseif (function_exists('apache_request_headers')) {
+        $headers = apache_request_headers();
+        return $headers['Authorization'] ?? null;
+    }
+    return null;
+}
 
 function authenticate() {
-    $secret = 'your-256-bit-secret'; // Replace with env variable
-    
     // Get Authorization header
-    $headers = getallheaders();
-    if (!isset($headers['Authorization'])) {
-        http_response_code(401);
-        echo json_encode(["error" => "Authorization header missing"]);
-        exit();
-    }
+    $authHeader = getAuthorizationHeader();
 
-    $authHeader = $headers['Authorization'];
-    if (!preg_match('/Bearer\s+(.*)$/i', $authHeader, $matches)) {
+    if (!$authHeader || !preg_match('/Bearer\s+(\S+)/', $authHeader, $matches)) {
         http_response_code(401);
-        echo json_encode(["error" => "Invalid token format"]);
-        exit();
+        echo json_encode(["error" => "Authorization header missing or invalid"]);
+        exit;
     }
 
     $jwt = $matches[1];
-    
-    if (!validate_jwt($jwt, $secret)) {
+    $payload = validate_jwt($jwt);
+
+    if (!$payload) {
         http_response_code(401);
         echo json_encode(["error" => "Invalid or expired token"]);
-        exit();
+        exit;
     }
 
-    // Return decoded payload
-    $tokenParts = explode('.', $jwt);
-    return json_decode(base64_decode(strtr($tokenParts[1], '-_', '+/')), true);
+    return $payload;
 }
 ?>
