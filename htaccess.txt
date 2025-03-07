@@ -55,3 +55,7 @@ http://localhost/PENZI/Endpoints/confirmationAPI.php
   "response": "NO"
 }
 http://localhost/PENZi/Endpoints/selfdescriptionretreival.php?phoneNumber=0788888888&requester=072295757
+
+
+
+  "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjEsImlhdCI6MTc0MTMyNTA4NCwiZXhwIjoxNzQzOTE3MDg0fQ.Tk8CTCsADc7pqh4_sT3AiLXEw1UsZjUXUaBenBLPfNY"
