@@ -57,34 +57,34 @@ const UserManagement = () => {
     };
 
     return (
-        <div>
-            <h1>User Management</h1>
-            <table border="1" cellPadding="10" cellSpacing="0">
+        <div style={{ padding: "20px" }}>
+            <h1 style={{ textAlign: "center", marginBottom: "20px" }}>User Management</h1>
+            <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "18px" }}>
                 <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Name</th>
-                        <th>Age</th>
-                        <th>Gender</th>
-                        <th>County</th>
-                        <th>Town</th>
-                        <th>Phone Number</th>
-                        <th>Actions</th>
+                    <tr style={{ backgroundColor: "#007BFF", color: "white" }}>
+                        <th style={headerStyle}>ID</th>
+                        <th style={headerStyle}>Name</th>
+                        <th style={headerStyle}>Age</th>
+                        <th style={headerStyle}>Gender</th>
+                        <th style={headerStyle}>County</th>
+                        <th style={headerStyle}>Town</th>
+                        <th style={headerStyle}>Phone Number</th>
+                        <th style={headerStyle}>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {users.map(user => (
-                        <tr key={user.UserID}>
-                            <td>{user.UserID}</td>
-                            <td>{user.name}</td>
-                            <td>{user.Age}</td>
-                            <td>{user.Gender}</td>
-                            <td>{user.County}</td>
-                            <td>{user.Town}</td>
-                            <td>{user.PhoneNumber}</td>
-                            <td>
-                                <button onClick={() => handleEdit(user)}>Edit</button>
-                                <button onClick={() => handleDelete(user.UserID)}>Delete</button>
+                    {users.map((user, index) => (
+                        <tr key={user.UserID} style={index % 2 === 0 ? evenRowStyle : oddRowStyle}>
+                            <td style={cellStyle}>{user.UserID}</td>
+                            <td style={cellStyle}>{user.name}</td>
+                            <td style={cellStyle}>{user.Age}</td>
+                            <td style={cellStyle}>{user.Gender}</td>
+                            <td style={cellStyle}>{user.County}</td>
+                            <td style={cellStyle}>{user.Town}</td>
+                            <td style={cellStyle}>{user.PhoneNumber}</td>
+                            <td style={cellStyle}>
+                                <button style={editButton} onClick={() => handleEdit(user)}>Edit</button>
+                                <button style={deleteButton} onClick={() => handleDelete(user.UserID)}>Delete</button>
                             </td>
                         </tr>
                     ))}
@@ -93,22 +93,99 @@ const UserManagement = () => {
 
             {/* Edit Form */}
             {editingUser && (
-                <div>
+                <div style={formContainer}>
                     <h2>Edit User</h2>
                     <form onSubmit={(e) => { e.preventDefault(); handleUpdate(); }}>
-                        <input type="text" name="name" value={formData.name} onChange={handleInputChange} required />
-                        <input type="number" name="Age" value={formData.Age} onChange={handleInputChange} required />
-                        <input type="text" name="Gender" value={formData.Gender} onChange={handleInputChange} required />
-                        <input type="text" name="County" value={formData.County} onChange={handleInputChange} required />
-                        <input type="text" name="Town" value={formData.Town} onChange={handleInputChange} required />
-                        <input type="text" name="PhoneNumber" value={formData.PhoneNumber} onChange={handleInputChange} required />
-                        <button type="submit">Update</button>
-                        <button type="button" onClick={() => setEditingUser(null)}>Cancel</button>
+                        <input style={inputStyle} type="text" name="name" value={formData.name} onChange={handleInputChange} required />
+                        <input style={inputStyle} type="number" name="Age" value={formData.Age} onChange={handleInputChange} required />
+                        <input style={inputStyle} type="text" name="Gender" value={formData.Gender} onChange={handleInputChange} required />
+                        <input style={inputStyle} type="text" name="County" value={formData.County} onChange={handleInputChange} required />
+                        <input style={inputStyle} type="text" name="Town" value={formData.Town} onChange={handleInputChange} required />
+                        <input style={inputStyle} type="text" name="PhoneNumber" value={formData.PhoneNumber} onChange={handleInputChange} required />
+                        <button style={submitButton} type="submit">Update</button>
+                        <button style={cancelButton} type="button" onClick={() => setEditingUser(null)}>Cancel</button>
                     </form>
                 </div>
             )}
         </div>
     );
+};
+
+
+const headerStyle = {
+    padding: "12px",
+    textAlign: "left",
+    borderBottom: "2px solid black",
+};
+
+const cellStyle = {
+    padding: "12px",
+    borderBottom: "1px solid #ddd",
+};
+
+const evenRowStyle = {
+    backgroundColor: "#f2f2f2",
+};
+
+const oddRowStyle = {
+    backgroundColor: "#ffffff",
+};
+
+const editButton = {
+    backgroundColor: "#28a745",
+    color: "white",
+    border: "none",
+    padding: "8px 12px",
+    marginRight: "5px",
+    cursor: "pointer",
+    borderRadius: "4px",
+};
+
+const deleteButton = {
+    backgroundColor: "#dc3545",
+    color: "white",
+    border: "none",
+    padding: "8px 12px",
+    cursor: "pointer",
+    borderRadius: "4px",
+};
+
+const formContainer = {
+    marginTop: "20px",
+    padding: "15px",
+    backgroundColor: "#f8f9fa",
+    borderRadius: "8px",
+    boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.1)",
+    width: "50%",
+    margin: "auto",
+};
+
+const inputStyle = {
+    display: "block",
+    width: "100%",
+    padding: "8px",
+    marginBottom: "10px",
+    border: "1px solid #ccc",
+    borderRadius: "4px",
+};
+
+const submitButton = {
+    backgroundColor: "#007BFF",
+    color: "white",
+    border: "none",
+    padding: "10px 15px",
+    cursor: "pointer",
+    borderRadius: "4px",
+    marginRight: "5px",
+};
+
+const cancelButton = {
+    backgroundColor: "#6c757d",
+    color: "white",
+    border: "none",
+    padding: "10px 15px",
+    cursor: "pointer",
+    borderRadius: "4px",
 };
 
 export default UserManagement;
