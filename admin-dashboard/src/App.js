@@ -1,12 +1,11 @@
-import React from "react";   
+import React from "react";    
 import { Route, Routes } from "react-router-dom";
 import Sidebar from "./components/Sidebar";
-import UserManagement from "./pages/UserManagement";  // Correct import
-import MatchRequests from "./pages/MatchRequests";    // Correct import for MatchRequests
+import UserManagement from "./pages/UserManagement"; 
+import MatchRequests from "./pages/MatchRequests";    
+import Reports from "./pages/Reports";
+import Dashboard from "./pages/Dashboard"; // Import the actual Dashboard component
 import "./App.css";
-
-const Dashboard = () => <h1>Dashboard Overview</h1>;
-const Reports = () => <h1>Reports & Analytics</h1>;
 
 function App() {
   return (
