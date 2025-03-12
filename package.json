@@ -1,9 +1,5 @@
 {
-  "name": "penzi",
-  "version": "1.0.0",
-  "description": "Penzi matchmaking project",
-  "scripts": {
-    "start": "php -S localhost:8000 -t ."
-  },
-  "dependencies": {}
+  "dependencies": {
+    "react-router-dom": "^7.3.0"
+  }
 }
