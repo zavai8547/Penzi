@@ -4,9 +4,9 @@ import "./Sidebar.css";
 
 const Sidebar = () => {
   const handleLogout = () => {
-    // Clear user session or token (implement this based on your authentication)
+   
     alert("Logging out...");
-    // Redirect to login page (if applicable)
+    
     window.location.href = "/login"; // Change this if using a login route
   };
 
@@ -15,7 +15,7 @@ const Sidebar = () => {
       <h1 className="sidebar-logo">Admin Dashboard</h1>
       <ul className="sidebar-links">
         
-       <h1><li><Link to="/">🏠 Dashboard</Link></li> </h1>
+       <h1><li><Link to="/">🏠 Dashboard </Link></li> </h1>
         <h1><li><Link to="/users">👥 User Management</Link></li></h1>
         <h1><li><Link to="/match-requests">💌 Match Requests</Link></li></h1>
         <h1><li><Link to="/reports">📊 Reports & Analytics</Link></li></h1>
