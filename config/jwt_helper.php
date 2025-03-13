@@ -1,19 +1,19 @@
 <?php
-// Constants
-define('SECRET_KEY', 'your-256-bit-secret-here!'); // Keep this secure
+
+define('SECRET_KEY', 'your-256-bit-secret-here!'); 
 define('VALID_API_KEY', 'Rodney');
 
-// Base64URL Encoding
+
 function base64url_encode($data) {
     return rtrim(strtr(base64_encode($data), '+/', '-_'), '=');
 }
 
-// Base64URL Decoding
+
 function base64url_decode($data) {
     return base64_decode(strtr($data, '-_', '+/'));
 }
 
-// Generate JWT
+
 function generate_jwt($payload) {
     $header = json_encode(['typ' => 'JWT', 'alg' => 'HS256']);
     $payload['exp'] = time() + (60 * 60 * 24 * 30); // 30 days

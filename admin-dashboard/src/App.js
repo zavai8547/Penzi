@@ -4,7 +4,7 @@ import Sidebar from "./components/Sidebar";
 import UserManagement from "./pages/UserManagement"; 
 import MatchRequests from "./pages/MatchRequests";    
 import Reports from "./pages/Reports";
-import Dashboard from "./pages/Dashboard"; // Import the actual Dashboard component
+import Dashboard from "./pages/Dashboard"; 
 import "./App.css";
 
 function App() {

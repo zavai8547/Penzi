@@ -16,7 +16,7 @@ const Dashboard = () => {
       .catch((error) => console.error("Error fetching dashboard stats:", error));
   }, []);
 
-  // Styles
+  
   const styles = {
     container: {
       minHeight: "100vh",

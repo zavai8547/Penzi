@@ -7,7 +7,7 @@ const Sidebar = () => {
    
     alert("Logging out...");
     
-    window.location.href = "/login"; // Change this if using a login route
+    window.location.href = "/login"; 
   };
 
   return (

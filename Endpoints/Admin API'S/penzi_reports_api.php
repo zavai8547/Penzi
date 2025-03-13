@@ -1,34 +1,51 @@
-<?php 
-header('Content-Type: application/json');
-require '../config/db.php'; 
+<?php
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
+header("Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With");
+header("Content-Type: application/json"); // Ensure response is JSON
+
+// Handle CORS preflight requests
+if ($_SERVER['REQUEST_METHOD'] == "OPTIONS") {
+    http_response_code(200);
+    exit();
+}
+
+require $_SERVER['DOCUMENT_ROOT'] . "/PENZI/config/db.php";
 
 $action = $_GET['action'] ?? '';
 
 switch ($action) {
     case 'user_growth':
-        echo json_encode(getUserGrowth($conn));
+        sendJsonResponse(getUserGrowth($conn));
         break;
     case 'match_performance':
-        echo json_encode(getMatchPerformance($conn));
+        sendJsonResponse(getMatchPerformance($conn));
         break;
     case 'top_locations':
-        echo json_encode(getTopLocations($conn));
+        sendJsonResponse(getTopLocations($conn));
         break;
     case 'export':
         exportData($conn);
         break;
     default:
-        echo json_encode(['error' => 'Invalid action']);
+        sendJsonResponse(['error' => 'Invalid action'], 400);
+}
+
+// Helper function to send JSON response
+function sendJsonResponse($data, $statusCode = 200) {
+    http_response_code($statusCode);
+    echo json_encode(["success" => true, "data" => $data]);
+    exit();
 }
 
 // Fetch user growth trends
 function getUserGrowth($conn) {
-    $query = "SELECT DATE(created_at) as date, COUNT(id) as total 
+    $query = "SELECT DATE(RegistrationDate) as date, COUNT(UserID) as total 
               FROM users 
               GROUP BY date 
               ORDER BY date DESC 
               LIMIT 7";
-    
+
     $result = $conn->query($query);
     if (!$result) {
         return ['error' => $conn->error];
@@ -39,17 +56,18 @@ function getUserGrowth($conn) {
 
 // Fetch match performance data
 function getMatchPerformance($conn) {
-    $query = "SELECT DATE(m.request_date) as date, 
-                     COUNT(m.id) as requests, 
-                     COUNT(u.id) as confirmations 
+    $query = "SELECT DATE(m.RequestDate) as date, 
+                     COUNT(m.MatchRequestID) as requests, 
+                     COUNT(u.ConfirmationID) as confirmations 
               FROM matchrequests m 
               LEFT JOIN userconfirmations u 
-              ON DATE(m.request_date) = DATE(u.confirmation_date)
+              ON m.MatchRequestID = u.request_id 
               GROUP BY date 
               ORDER BY date DESC 
               LIMIT 7";
 
     $result = $conn->query($query);
+    
     if (!$result) {
         return ['error' => $conn->error];
     }
@@ -59,13 +77,14 @@ function getMatchPerformance($conn) {
 
 // Fetch top locations
 function getTopLocations($conn) {
-    $query = "SELECT location, COUNT(id) as total 
+    $query = "SELECT town, COUNT(*) AS user_count 
               FROM users 
-              GROUP BY location 
-              ORDER BY total DESC 
+              GROUP BY town 
+              ORDER BY user_count DESC 
               LIMIT 5";
 
     $result = $conn->query($query);
+    
     if (!$result) {
         return ['error' => $conn->error];
     }
@@ -75,7 +94,13 @@ function getTopLocations($conn) {
 
 // Export Data as CSV
 function exportData($conn) {
-    $table = $_GET['table'] ?? 'users'; // Default to 'users' if not specified
+    $allowedTables = ['users', 'matchrequests', 'userconfirmations']; // Allowed tables
+    $table = $_GET['table'] ?? 'users'; // Default to 'users'
+
+    if (!in_array($table, $allowedTables)) {
+        sendJsonResponse(['error' => 'Invalid table name'], 400);
+    }
+
     $filename = "export_{$table}_" . date('Y-m-d') . ".csv";
 
     header('Content-Type: text/csv');
@@ -85,8 +110,7 @@ function exportData($conn) {
     $result = $conn->query($query);
 
     if (!$result) {
-        echo json_encode(['error' => $conn->error]);
-        exit;
+        sendJsonResponse(['error' => $conn->error], 500);
     }
 
     $output = fopen('php://output', 'w');
