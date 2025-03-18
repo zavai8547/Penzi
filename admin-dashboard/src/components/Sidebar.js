@@ -7,7 +7,7 @@ const Sidebar = () => {
    
     alert("Logging out...");
     
-    window.location.href = "/login"; 
+    window.location.href = "/admin-login"; 
   };
 
   return (
