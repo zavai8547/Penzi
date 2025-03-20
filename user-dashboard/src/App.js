@@ -6,84 +6,112 @@ function App() {
     const [messages, setMessages] = useState([]);
     const [input, setInput] = useState("");
     const [apiStep, setApiStep] = useState(1);
-
-    const authToken =
-        "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjEsImlhdCI6MTc0MTMyNTA4NCwiZXhwIjoxNzQzOTE3MDg0fQ.Tk8CTCsADc7pqh4_sT3AiLXEw1UsZjUXUaBenBLPfNY";
+    const [userPhone, setUserPhone] = useState(null);
+    const [authToken, setAuthToken] = useState("YOUR_AUTH_TOKEN_HERE");
 
     const sendMessage = async () => {
-        if (input.trim() === "") return;
+        if (!input.trim()) return;
 
-        // Add user message to UI
         setMessages((prev) => [...prev, { text: input, isUser: true }]);
         setInput("");
 
         try {
-            let response, data;
             const headers = { "Content-Type": "application/json" };
+            let apiUrl = "";
+            let bodyContent = {};
 
-            // Add Authorization header after step 1
             if (apiStep > 1) {
+                if (!authToken) {
+                    setMessages((prev) => [...prev, { text: "⚠️ Authentication token missing.", isUser: false }]);
+                    return;
+                }
                 headers["Authorization"] = `Bearer ${authToken}`;
             }
 
-            let apiUrl = "";
-            let bodyContent = JSON.stringify({ message: input });
-
-            // Determine API endpoint
             switch (apiStep) {
                 case 1:
                     apiUrl = "http://localhost/penzi/Endpoints/first.php";
+                    bodyContent = { message: input };
                     break;
+
                 case 2:
                     apiUrl = "http://localhost/penzi/Endpoints/userregistration.php";
+                    bodyContent = { message: input }; 
                     break;
+
                 case 3:
-                    apiUrl = "http://localhost/penzi/Endpoints/useradddetails.php";
-                    break;
                 case 4:
-                    apiUrl = "http://localhost/penzi/Endpoints/api4.php";
+                    if (!userPhone) {
+                        setMessages((prev) => [...prev, { text: "⚠️ Missing phone number. Try registering first.", isUser: false }]);
+                        return;
+                    }
+                    apiUrl = `http://localhost/penzi/Endpoints/${apiStep === 3 ? "useradddetails.php" : "selfdescription.php"}`;
+                    bodyContent = { phone: userPhone, message: input };
                     break;
-                case 5:
-                    apiUrl = "http://localhost/penzi/Endpoints/api5.php";
+                    case 5:
+                    apiUrl = "http://localhost/penzi/Endpoints/matchrequest.php";
                     break;
+
                 case 6:
-                    apiUrl = "http://localhost/penzi/Endpoints/api6.php";
+                    apiUrl = "http://localhost/penzi/Endpoints/getmorematches.php";
                     break;
+
                 case 7:
                     const targetPhoneNumber = input.includes("#") ? input.split("#")[1] : "";
+                    if (!targetPhoneNumber.trim()) {
+                        setMessages((prev) => [...prev, { text: "⚠️ Please provide a valid phone number.", isUser: false }]);
+                        return;
+                    }
                     apiUrl = `http://localhost/penzi/Endpoints/getSelfDescription.php?phoneNumber=${targetPhoneNumber}`;
-                    bodyContent = null; // No body for GET request
                     break;
+
                 case 8:
-                    apiUrl = "http://localhost/penzi/Endpoints/api8.php";
+                    apiUrl = "http://localhost/penzi/Endpoints/notify-interest";
+                    bodyContent = undefined;
                     break;
+                    
+                case 9:
+                    apiUrl = "http://localhost/penzi/Endpoints/confirmationAPI.php";
+                    bodyContent = undefined;
+                    break;
+
+                case 10:
+                    apiUrl = "http://localhost/penzi/Endpoints/confirmationAPI.php";
+                    break;
+
                 default:
                     console.error("⚠️ Invalid API step");
                     return;
             }
 
-            console.log(`🔹 Sending API Step ${apiStep}:`, { apiUrl, bodyContent });
+            console.log(`📤 Sending API Step ${apiStep}:`, { apiUrl, bodyContent });
 
-            // Make API request
-            response = await fetch(apiUrl, {
+            const response = await fetch(apiUrl, {
                 method: bodyContent ? "POST" : "GET",
                 headers,
-                ...(bodyContent ? { body: bodyContent } : {}), // Prevent body in GET requests
+                ...(bodyContent ? { body: JSON.stringify(bodyContent) } : {}),
             });
 
             if (!response.ok) {
+                if (response.status === 401) {
+                    throw new Error("⚠️ Unauthorized! Check token or user authentication.");
+                }
                 throw new Error(`API ${apiStep} failed with status ${response.status}`);
             }
 
-            data = await response.json();
+            const data = await response.json();
             console.log(`✅ API ${apiStep} Response:`, data);
 
-            // Handle API response
-            if (data.reply) {
-                setMessages((prev) => [...prev, { text: data.reply, isUser: false }]);
-                setApiStep((prevStep) => prevStep + 1); // Increment API step
-            } else {
-                setMessages((prev) => [...prev, { text: "⚠️ No response received.", isUser: false }]);
+            if (apiStep === 2 && data.phone) {
+                setUserPhone(data.phone);
+                console.log("✅ Stored user phone:", data.phone);
+            }
+
+            const responseMessage = data.reply || data.message || "⚠️ No response received.";
+            setMessages((prev) => [...prev, { text: responseMessage, isUser: false }]);
+
+            if (apiStep !== 2 || data.phone) {
+                setApiStep((prevStep) => prevStep + 1);
             }
         } catch (error) {
             console.error("❌ API Error:", error);
