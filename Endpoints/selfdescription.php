@@ -138,5 +138,5 @@ echo "Update executed\n";
 $stmt->close();
 $conn->close();
 
-echo "Script finished\n"; 
+echo "Script finished\n";
 ?>

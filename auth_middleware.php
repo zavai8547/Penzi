@@ -1,4 +1,4 @@
-<?php   
+<?php 
 require_once 'C:/xampp/htdocs/penzi/config/jwt_helper.php';
 
 function getAuthorizationHeader() {
