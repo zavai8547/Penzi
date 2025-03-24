@@ -1,31 +1,65 @@
 <?php
 require '../config/db.php';
 require '../auth_middleware.php';
+
+// Handle preflight requests
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    header("Access-Control-Allow-Origin: http://localhost:3000");
+    header("Access-Control-Allow-Methods: POST, OPTIONS");
+    header("Access-Control-Allow-Headers: Content-Type, Authorization");
+    header("Access-Control-Allow-Credentials: true");
+    http_response_code(200);
+    exit();
+}
+
 header("Content-Type: application/json");
-header("Access-Control-Allow-Origin: *");
-header("Access-Control-Allow-Methods: POST");
+header("Access-Control-Allow-Origin: http://localhost:3000");
+header("Access-Control-Allow-Methods: POST, OPTIONS");
+header("Access-Control-Allow-Headers: Content-Type, Authorization");
+header("Access-Control-Allow-Credentials: true");
 
-$user = authenticate();
+// Allow only POST requests
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    echo json_encode(["error" => "Invalid request method"]);
+    http_response_code(405);
+    echo json_encode(["error" => "Method Not Allowed"]);
     exit();
 }
 
-$data = json_decode(file_get_contents("php://input"), true);
+// Get input data
+$json = file_get_contents('php://input');
+$data = json_decode($json, true);
 
-// Validate input
-if (!isset($data['min_age'], $data['max_age'], $data['town'], $data['requester_phone'])) {
-    echo json_encode(["error" => "Missing required fields"]);
+if (json_last_error() !== JSON_ERROR_NONE) {
+    http_response_code(400);
+    echo json_encode(["error" => "Invalid JSON format"]);
     exit();
 }
 
-$min_age = intval($data['min_age']);
-$max_age = intval($data['max_age']);
-$town = $data['town'];
-$requester_phone = $data['requester_phone'];
+// Validate required fields
+$requiredFields = ['min_age', 'max_age', 'town', 'requester_phone'];
+foreach ($requiredFields as $field) {
+    if (!isset($data[$field]) || empty($data[$field])) {
+        http_response_code(400);
+        echo json_encode(["error" => "Missing required field: $field"]);
+        exit();
+    }
+}
+
+// Sanitize inputs
+$min_age = filter_var($data['min_age'], FILTER_VALIDATE_INT);
+$max_age = filter_var($data['max_age'], FILTER_VALIDATE_INT);
+$town = htmlspecialchars($data['town'], ENT_QUOTES, 'UTF-8');
+$requester_phone = filter_var($data['requester_phone'], FILTER_SANITIZE_STRING);
+
+// Validate integers
+if ($min_age === false || $max_age === false || $min_age > $max_age) {
+    http_response_code(400);
+    echo json_encode(["error" => "Invalid age range"]);
+    exit();
+}
 
 try {
-    // Get requester's UserID and Gender
+    // Database operations
     $stmt = $conn->prepare("SELECT UserID, Gender FROM users WHERE PhoneNumber = ?");
     $stmt->bind_param("s", $requester_phone);
     $stmt->execute();
@@ -33,86 +67,27 @@ try {
     $stmt->close();
 
     if (!$requester) {
+        http_response_code(404);
         echo json_encode(["error" => "Requester not found"]);
         exit();
     }
 
-    $user_id = $requester['UserID'];
-    $requester_gender = $requester['Gender'];
-
-    // Save match request to database
-    $insert_stmt = $conn->prepare("
-        INSERT INTO matchrequests 
-        (UserID, AgeRange, Town, RequestDate) 
-        VALUES (?, ?, ?, NOW())
-    ");
-    $age_range = $min_age . '-' . $max_age;
-    $insert_stmt->bind_param("iss", $user_id, $age_range, $town);
+    // Insert match request
+    $age_range = "$min_age-$max_age";
+    $insert_stmt = $conn->prepare("INSERT INTO matchrequests (UserID, AgeRange, Town, RequestDate) VALUES (?, ?, ?, NOW())");
+    $insert_stmt->bind_param("iss", $requester['UserID'], $age_range, $town);
     $insert_stmt->execute();
     $insert_stmt->close();
 
-    // Also save request in the `requests` table
-    $request_data = json_encode([
-        "min_age" => $min_age,
-        "max_age" => $max_age,
-        "town" => $town
+    // Return response
+    echo json_encode([
+        "message" => "Match request processed successfully",
+        "total_matches" => 0, // Implement actual matching logic
+        "matches" => []
     ]);
 
-    $req_stmt = $conn->prepare("
-        INSERT INTO requests 
-        (UserID, RequestType, RequestData, RequestDate, update_at) 
-        VALUES (?, 'match_request', ?, NOW(), NOW())
-    ");
-    $req_stmt->bind_param("is", $user_id, $request_data);
-    $req_stmt->execute();
-    $req_stmt->close();
-
-    // Determine target gender
-    $target_gender = ($requester_gender === 'Male') ? 'Female' : 'Male';
-
-    
-    $count_stmt = $conn->prepare("
-        SELECT COUNT(*) AS total 
-        FROM users 
-        WHERE Age BETWEEN ? AND ? 
-        AND Town = ? 
-        AND Gender = ?
-        AND PhoneNumber != ?
-    ");
-    $count_stmt->bind_param("iisss", $min_age, $max_age, $town, $target_gender, $requester_phone);
-    $count_stmt->execute();
-    $total = $count_stmt->get_result()->fetch_assoc()['total'];
-    $count_stmt->close();
-
-    
-    $match_stmt = $conn->prepare("
-        SELECT name, Age, PhoneNumber 
-        FROM users 
-        WHERE Age BETWEEN ? AND ? 
-        AND Town = ? 
-        AND Gender = ?
-        AND PhoneNumber != ?
-        LIMIT 3
-    ");
-    $match_stmt->bind_param("iisss", $min_age, $max_age, $town, $target_gender, $requester_phone);
-    $match_stmt->execute();
-    $matches = $match_stmt->get_result()->fetch_all(MYSQLI_ASSOC);
-    $match_stmt->close();
-
-    
-    $gender_term = ($target_gender === 'Female') ? 'ladies' : 'men';
-    $response = "We have $total $gender_term who match your choice! ";
-    $response .= "We will send you details of 3 of them shortly.\n\n";
-
-    foreach ($matches as $match) {
-        $response .= "{$match['name']} aged {$match['Age']}, {$match['PhoneNumber']}.\n";
-    }
-
-    $response .= "\nTo get more details about someone, SMS their number e.g., 070817089 to 22141";
-
-    echo json_encode(["message" => $response]);
-
 } catch (Exception $e) {
-    echo json_encode(["error" => $e->getMessage()]);
+    http_response_code(500);
+    echo json_encode(["error" => "Server error: " . $e->getMessage()]);
 }
 ?>

@@ -36,11 +36,10 @@ function App() {
 
                 case 2:
                     apiUrl = "http://localhost/penzi/Endpoints/userregistration.php";
-                    bodyContent = { message: input }; 
+                    bodyContent = { message: input };
                     break;
 
                 case 3:
-                case 4:
                     if (!userPhone) {
                         setMessages((prev) => [...prev, { text: "⚠️ Missing phone number. Try registering first.", isUser: false }]);
                         return;
@@ -48,12 +47,15 @@ function App() {
                     apiUrl = `http://localhost/penzi/Endpoints/${apiStep === 3 ? "useradddetails.php" : "selfdescription.php"}`;
                     bodyContent = { phone: userPhone, message: input };
                     break;
-                    case 5:
-                    apiUrl = "http://localhost/penzi/Endpoints/matchrequest.php";
+
+                case 4:
+                    apiUrl = "http://localhost/penzi/Endpoints/selfdescription.php";
+                    bodyContent = { phone: userPhone, message: input }; 
                     break;
 
-                case 6:
-                    apiUrl = "http://localhost/penzi/Endpoints/getmorematches.php";
+                case 5:
+                    apiUrl = "http://localhost/penzi/Endpoints/matchrequest.php";
+                    bodyContent = { phone: userPhone, message: input };
                     break;
 
                 case 7:
@@ -69,7 +71,7 @@ function App() {
                     apiUrl = "http://localhost/penzi/Endpoints/notify-interest";
                     bodyContent = undefined;
                     break;
-                    
+
                 case 9:
                     apiUrl = "http://localhost/penzi/Endpoints/confirmationAPI.php";
                     bodyContent = undefined;
