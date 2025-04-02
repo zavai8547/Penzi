@@ -30,12 +30,12 @@ function App() {
 
             switch (apiStep) {
                 case 1:
-                    apiUrl = "http://localhost/penzi/Endpoints/first.php";
+                    apiUrl = "http://backend/first.php";
                     bodyContent = { message: input };
                     break;
 
                 case 2:
-                    apiUrl = "http://localhost/penzi/Endpoints/userregistration.php";
+                    apiUrl = "http://backend/userregistration.php";
                     bodyContent = { message: input };
                     break;
 
@@ -44,17 +44,17 @@ function App() {
                         setMessages((prev) => [...prev, { text: "⚠️ Missing phone number. Try registering first.", isUser: false }]);
                         return;
                     }
-                    apiUrl = `http://localhost/penzi/Endpoints/${apiStep === 3 ? "useradddetails.php" : "selfdescription.php"}`;
+                    apiUrl = `http://backend/penzi/Endpoints/${apiStep === 3 ? "useradddetails.php" : "selfdescription.php"}`;
                     bodyContent = { phone: userPhone, message: input };
                     break;
 
                 case 4:
-                    apiUrl = "http://localhost/penzi/Endpoints/selfdescription.php";
-                    bodyContent = { phone: userPhone, message: input }; 
+                    apiUrl = "http://backend/penzi/Endpoints/selfdescription.php";
+                    bodyContent = { phone: userPhone, message: input };
                     break;
 
                 case 5:
-                    apiUrl = "http://localhost/penzi/Endpoints/matchrequest.php";
+                    apiUrl = "http://backend/penzi/Endpoints/matchrequest.php";
                     bodyContent = { phone: userPhone, message: input };
                     break;
 
@@ -64,21 +64,21 @@ function App() {
                         setMessages((prev) => [...prev, { text: "⚠️ Please provide a valid phone number.", isUser: false }]);
                         return;
                     }
-                    apiUrl = `http://localhost/penzi/Endpoints/getSelfDescription.php?phoneNumber=${targetPhoneNumber}`;
+                    apiUrl = `http://backend/penzi/Endpoints/getSelfDescription.php?phoneNumber=${targetPhoneNumber}`;
                     break;
 
                 case 8:
-                    apiUrl = "http://localhost/penzi/Endpoints/notify-interest";
+                    apiUrl = "http://backend/penzi/Endpoints/notify-interest";
                     bodyContent = undefined;
                     break;
 
                 case 9:
-                    apiUrl = "http://localhost/penzi/Endpoints/confirmationAPI.php";
+                    apiUrl = "http://backend/penzi/Endpoints/confirmationAPI.php";
                     bodyContent = undefined;
                     break;
 
                 case 10:
-                    apiUrl = "http://localhost/penzi/Endpoints/confirmationAPI.php";
+                    apiUrl = "http://backend/penzi/Endpoints/confirmationAPI.php";
                     break;
 
                 default:

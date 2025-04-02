@@ -1,8 +1,8 @@
 <?php
-$servername = "localhost"; 
+$servername = "database"; 
 $username = "root"; 
-$password = ""; 
-$dbname = "penzi_db"; 
+$password = "";     
+$dbname = "penzi_db";     
 
 $conn = new mysqli($servername, $username, $password, $dbname);
 

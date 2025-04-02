@@ -4,7 +4,7 @@ const MatchRequests = () => {
   const [matchRequests, setMatchRequests] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost/PENZI/Endpoints/Admin API'S/getMatchRequests.php")
+    fetch("http://backend/PENZI/Endpoints/Admin API'S/getMatchRequests.php")
       .then((response) => response.json())
       .then((data) => setMatchRequests(data))
       .catch((error) => console.error("Error fetching data:", error));

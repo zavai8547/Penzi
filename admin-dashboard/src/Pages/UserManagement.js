@@ -14,7 +14,7 @@ const UserManagement = () => {
     });
 
     useEffect(() => {
-        fetch("http://localhost/PENZI/Endpoints/Admin API'S/get_users.php")
+        fetch("http://backend/PENZI/Endpoints/Admin API'S/get_users.php")
             .then(response => response.json())
             .then(data => setUsers(data))
             .catch(error => console.error("Error fetching users:", error));
@@ -30,7 +30,7 @@ const UserManagement = () => {
     };
 
     const handleUpdate = () => {
-        fetch("http://localhost/PENZI/Endpoints/Admin API'S/edit_user.php", {
+        fetch("http://backend/PENZI/Endpoints/Admin API'S/edit_user.php", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(formData)
@@ -46,7 +46,7 @@ const UserManagement = () => {
 
     const handleDelete = (userID) => {
         if (window.confirm("Are you sure you want to delete this user?")) {
-            fetch(`http://localhost/PENZI/Endpoints/Admin API'S/delete_user.php?id=${userID}`, { method: "DELETE" })
+            fetch(`http://backend/PENZI/Endpoints/Admin API'S/delete_user.php?id=${userID}`, { method: "DELETE" })
                 .then(response => response.json())
                 .then(data => {
                     alert(data.message);
