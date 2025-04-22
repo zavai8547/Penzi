@@ -2,9 +2,9 @@
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json");
 
-$servername = "localhost";
+$servername = "database";
 $username = "root";  
-$password = "";      
+$password = "rodney";      
 $database = "penzi_db";
 
 

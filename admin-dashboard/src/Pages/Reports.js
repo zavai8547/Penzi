@@ -31,7 +31,7 @@ const ReportsAnalytics = () => {
   const fetchData = async (action, setter, defaultValue) => {
     try {
       const response = await fetch(
-        `http://backend/PENZI/Endpoints/Admin%20API'S/penzi_reports_api.php?action=${action}`
+        `http://localhost:8000/Admin API'S/penzi_reports_api.php?action=${action}`
       );
       if (!response.ok) throw new Error(`API error: ${response.statusText}`);
       const data = await response.json();
@@ -66,7 +66,7 @@ const ReportsAnalytics = () => {
           className="bg-gradient-to-r from-blue-500 to-indigo-600 text-white px-6 py-2 rounded-lg shadow-md hover:scale-105 transition"
           onClick={() =>
             window.open(
-              "http://backend/PENZI/Endpoints/Admin%20API'S/penzi_reports_api.php?action=export"
+              "http://localhost:8000/Admin API'S/penzi_reports_api.php?action=export"
             )
           }
         >

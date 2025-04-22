@@ -10,7 +10,7 @@ if ($_SERVER['REQUEST_METHOD'] == "OPTIONS") {
     exit();
 }
 
-require $_SERVER['DOCUMENT_ROOT'] . "/PENZI/config/db.php";
+require_once '/var/www/html/config/db.php';
 
 $action = $_GET['action'] ?? '';
 

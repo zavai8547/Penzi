@@ -1,14 +1,10 @@
-# Use the PHP Apache base image
-FROM php:apache
+FROM node:lts as build-stage
+WORKDIR /app
+COPY . .
+RUN yarn
+RUN yarn build
+#RUN export DISABLE_ESLINT_PLUGIN=true && npm i && npm run build
 
-# Copy user dashboard files to Apache's root
-COPY . /var/www/html/
-
-# Set working directory
-WORKDIR /var/www/html/
-
-# Expose port 80 for your Apache server (assuming it's serving PHP)
-EXPOSE 80
-
-# Run Apache in the foreground (default for the php:apache image)
-CMD ["apache2-foreground"]
+FROM nginx:1.15
+COPY --from=build-stage /app/build/ /usr/share/nginx/html
+COPY --from=build-stage /app/nginx.conf /etc/nginx/conf.d/default.conf

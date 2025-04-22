@@ -10,7 +10,7 @@ const Dashboard = () => {
   });
 
   useEffect(() => {
-    fetch("http://backend/PENZI/Endpoints/Admin API'S/getDashboardStats.php")
+    fetch("http://localhost:8000/Admin API'S/getDashboardStats.php")
       .then((response) => response.json())
       .then((data) => setStats(data))
       .catch((error) => console.error("Error fetching dashboard stats:", error));

@@ -2,9 +2,9 @@
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json");
 
-$host = "localhost";
+$host = "database";
 $user = "root";
-$pass = "";
+$pass = "rodney";
 $dbname = "penzi_db";
 
 $conn = new mysqli($host, $user, $pass, $dbname);

@@ -1,7 +1,7 @@
 <?php
 $servername = "database"; 
 $username = "root"; 
-$password = "";     
+$password = "rodney";     
 $dbname = "penzi_db";     
 
 $conn = new mysqli($servername, $username, $password, $dbname);

@@ -30,35 +30,35 @@ function App() {
 
             switch (apiStep) {
                 case 1:
-                    apiUrl = "http://backend/first.php";
+                    apiUrl = "http://localhost:8000/first.php";
                     bodyContent = { message: input };
                     break;
-
+                
                 case 2:
-                    apiUrl = "http://backend/userregistration.php";
+                    apiUrl = "http://localhost:8000/userregistration.php";
                     bodyContent = { message: input };
                     break;
 
                 case 3:
                     if (!userPhone) {
-                        setMessages((prev) => [...prev, { text: "⚠️ Missing phone number. Try registering first.", isUser: false }]);
+                        setMessages((prev) => [...prev, { text: "⚠️ Missing phone number. Kindly registering first.", isUser: false }]);
                         return;
                     }
-                    apiUrl = `http://backend/penzi/Endpoints/${apiStep === 3 ? "useradddetails.php" : "selfdescription.php"}`;
+                    apiUrl = `http://localhost:8000/${apiStep === 3 ? "useradddetails.php" : "selfdescription.php"}`;
                     bodyContent = { phone: userPhone, message: input };
                     break;
 
                 case 4:
-                    apiUrl = "http://backend/penzi/Endpoints/selfdescription.php";
+                    apiUrl = "http://localhost:8000/selfdescription.php";
                     bodyContent = { phone: userPhone, message: input };
                     break;
 
                 case 5:
-                    apiUrl = "http://backend/penzi/Endpoints/matchrequest.php";
+                    apiUrl = "http://localhost:8000/matchrequest.php";
                     bodyContent = { phone: userPhone, message: input };
                     break;
 
-                case 7:
+                case 6:
                     const targetPhoneNumber = input.includes("#") ? input.split("#")[1] : "";
                     if (!targetPhoneNumber.trim()) {
                         setMessages((prev) => [...prev, { text: "⚠️ Please provide a valid phone number.", isUser: false }]);
@@ -67,7 +67,7 @@ function App() {
                     apiUrl = `http://backend/penzi/Endpoints/getSelfDescription.php?phoneNumber=${targetPhoneNumber}`;
                     break;
 
-                case 8:
+                case 7:
                     apiUrl = "http://backend/penzi/Endpoints/notify-interest";
                     bodyContent = undefined;
                     break;

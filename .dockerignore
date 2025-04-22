@@ -1,0 +1,7 @@
+node_modules
+.git
+admin-dashboard/node_modules
+admin-dashboard/.next
+admin-dashboard/build
+*.log
+docker-compose.override.yml

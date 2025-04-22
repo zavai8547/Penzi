@@ -1,6 +1,14 @@
+version: '3.8'
+
+networks:
+  penzi-network:
+    driver: bridge
+
 services:
   backend:
-    build: ./Endpoints
+    build:
+      context: . 
+      dockerfile: ./Endpoints/Dockerfile 
     ports:
       - "8000:80"
     volumes:
@@ -9,10 +17,12 @@ services:
       - database
     environment:
       MYSQL_HOST: database
-      MYSQL_USER: root  
-      MYSQL_PASSWORD: ""   
+      MYSQL_USER: root
+      MYSQL_PASSWORD: "rodney" 
       MYSQL_DATABASE: penzi_db
     restart: unless-stopped
+    networks:
+      - penzi-network
 
   admin-dashboard:
     build: ./admin-dashboard
@@ -20,9 +30,11 @@ services:
       - "3001:80"
     depends_on:
       - backend
-    volumes:
-      - ./admin-dashboard/build:/var/www/html/
+    # volumes:
+      # - ./admin-dashboard/build:/var/www/html/
     restart: unless-stopped
+    networks:
+      - penzi-network
 
   user-dashboard:
     build: ./user-dashboard
@@ -30,21 +42,24 @@ services:
       - "3002:80"
     depends_on:
       - backend
-
-    volumes:
-      - ./user-dashboard/build:/var/www/html/
+    # volumes:
+    #   - ./user-dashboard/build:/usr/share/nginx/html
     restart: unless-stopped
+    networks:
+      - penzi-network
 
   database:
     image: mysql:5.7
     environment:
-      MYSQL_ROOT_PASSWORD: ""
+      MYSQL_ROOT_PASSWORD: rodney 
       MYSQL_DATABASE: penzi_db
     ports:
       - "3306:3306"
     volumes:
       - db_data:/var/lib/mysql
     restart: unless-stopped
+    networks:
+      - penzi-network
 
 volumes:
   db_data:

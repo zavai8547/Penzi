@@ -5,7 +5,7 @@ const UserManagement = () => {
     const [editingUser, setEditingUser] = useState(null);
     const [formData, setFormData] = useState({
         UserID: "",
-        name: "",
+        Name: "",
         Age: "",
         Gender: "",
         County: "",
@@ -14,7 +14,7 @@ const UserManagement = () => {
     });
 
     useEffect(() => {
-        fetch("http://backend/PENZI/Endpoints/Admin API'S/get_users.php")
+        fetch("http://localhost:8000/Admin API'S/get_users.php")
             .then(response => response.json())
             .then(data => setUsers(data))
             .catch(error => console.error("Error fetching users:", error));
@@ -30,7 +30,7 @@ const UserManagement = () => {
     };
 
     const handleUpdate = () => {
-        fetch("http://backend/PENZI/Endpoints/Admin API'S/edit_user.php", {
+        fetch("http://localhost:8000/Admin API'S/edit_user.php", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(formData)
@@ -46,11 +46,11 @@ const UserManagement = () => {
 
     const handleDelete = (userID) => {
         if (window.confirm("Are you sure you want to delete this user?")) {
-            fetch(`http://backend/PENZI/Endpoints/Admin API'S/delete_user.php?id=${userID}`, { method: "DELETE" })
+            fetch(`http://localhost:8000/Admin API'S/delete_user.php?id=${userID}`, { method: "DELETE" })
                 .then(response => response.json())
                 .then(data => {
                     alert(data.message);
-                    setUsers(users.filter(user => user.UserID !== userID)); // Remove from state
+                    setUsers(users.filter(user => user.UserID !== userID)); 
                 })
                 .catch(error => console.error("Error deleting user:", error));
         }
@@ -76,7 +76,7 @@ const UserManagement = () => {
                     {users.map((user, index) => (
                         <tr key={user.UserID} style={index % 2 === 0 ? evenRowStyle : oddRowStyle}>
                             <td style={cellStyle}>{user.UserID}</td>
-                            <td style={cellStyle}>{user.name}</td>
+                            <td style={cellStyle}>{user.Name}</td>
                             <td style={cellStyle}>{user.Age}</td>
                             <td style={cellStyle}>{user.Gender}</td>
                             <td style={cellStyle}>{user.County}</td>
@@ -96,7 +96,7 @@ const UserManagement = () => {
                 <div style={formContainer}>
                     <h2>Edit User</h2>
                     <form onSubmit={(e) => { e.preventDefault(); handleUpdate(); }}>
-                        <input style={inputStyle} type="text" name="name" value={formData.name} onChange={handleInputChange} required />
+                        <input style={inputStyle} type="text" name="Name" value={formData.name} onChange={handleInputChange} required />
                         <input style={inputStyle} type="number" name="Age" value={formData.Age} onChange={handleInputChange} required />
                         <input style={inputStyle} type="text" name="Gender" value={formData.Gender} onChange={handleInputChange} required />
                         <input style={inputStyle} type="text" name="County" value={formData.County} onChange={handleInputChange} required />

@@ -12,7 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 header("Content-Type: application/json");
 
 $response = [
-    "reply" => "Welcome to our dating service with 6000 potential dating partners! To register, SMS start#name#age#gender#county#town#PhoneNumber E.g., start#John Doe#26#Male#Nakuru#Naivasha#0758265242"
+    "reply" => "Welcome to our dating service with 6000 potential dating partners! To register, SMS start#name#age#gender#county#town#PhoneNumber E.g., start#Zavai Rodney#26#Male#Nakuru#Naivasha#0758265242"
 ];
 
 echo json_encode($response);
