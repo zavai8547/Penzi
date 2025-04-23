@@ -58,7 +58,7 @@ try {
         $user['Religion'] ?? 'Not specified',
         $user['Ethnicity'] ?? 'Not specified',
         $phoneNumber,
-        explode(' ', $user['name'])[0] // First name
+        explode(' ', $user['name'])[0] 
     );
 
     echo json_encode(["message" => $message]);

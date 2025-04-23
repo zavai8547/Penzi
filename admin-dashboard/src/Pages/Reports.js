@@ -59,7 +59,7 @@ const ReportsAnalytics = () => {
 
   return (
     <div className="p-4">
-      {/* Top Bar with Download Button */}
+      {/* downloads */}
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-2xl font-bold">Reports & Analytics</h1>
         <button
@@ -74,9 +74,9 @@ const ReportsAnalytics = () => {
         </button>
       </div>
 
-      {/* Charts Section - FLEX for SIDE-BY-SIDE positioning */}
+      {/* Chrts*/}
 <div className="flex gap-6">
-  {/* User Growth Trends */}
+  {/* User Growth  */}
   <div className="border p-4 rounded-lg shadow-md bg-white flex-1 min-w-[500px]">
     <h2 className="text-xl font-bold mb-3">📈 User Growth Trends</h2>
     <LineChart width={500} height={300} data={userGrowth}>
@@ -89,7 +89,7 @@ const ReportsAnalytics = () => {
     </LineChart>
   </div>
 
-  {/* Matchmaking Performance */}
+  {/*Matches */}
   <div className="border p-4 rounded-lg shadow-md bg-white flex-1 min-w-[500px]">
     <h2 className="text-xl font-bold mb-3">💞 Matchmaking Performance</h2>
     <BarChart width={500} height={300} data={matchPerformance.requests}>

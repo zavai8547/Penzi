@@ -37,7 +37,7 @@ try {
         exit();
     }
 
-    // get users name 
+    
     $stmt = $conn->prepare("SELECT name FROM users WHERE PhoneNumber = ?");
     $stmt->bind_param("s", $data['target_phone']);
     $stmt->execute();

@@ -1,5 +1,5 @@
 <?php
-// CORS Headers — must be at the top before any other code
+
 header("Access-Control-Allow-Origin: http://localhost:3002");
 header("Access-Control-Allow-Methods: POST, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type, Authorization");
@@ -7,13 +7,13 @@ header("Access-Control-Allow-Credentials: true");
 header("Vary: Origin");
 header("Content-Type: application/json; charset=UTF-8");
 
-// Handle preflight request
+
 if ($_SERVER['REQUEST_METHOD'] === "OPTIONS") {
     http_response_code(204);
     exit();
 }
 
-// Now load DB connection
+// database connection
 require_once '/var/www/html/config/db.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -70,7 +70,7 @@ if (!is_numeric($age)) {
     exit();
 }
 
-// Clean phone number
+
 $phoneNumber = preg_replace('/\D/', '', $phoneNumber);
 if (strlen($phoneNumber) === 9) {
     $phoneNumber = '0' . $phoneNumber;
@@ -81,7 +81,7 @@ if (!preg_match('/^07\d{8}$/', $phoneNumber)) {
     exit();
 }
 
-// Check for duplicate
+// ensure hakuna numbers kama hio kwa db.
 $checkStmt = $conn->prepare("SELECT PhoneNumber FROM users WHERE PhoneNumber = ?");
 $checkStmt->bind_param("s", $phoneNumber);
 $checkStmt->execute();
@@ -89,8 +89,8 @@ $checkStmt->store_result();
 
 if ($checkStmt->num_rows > 0) {
     $checkStmt->close();
-    http_response_code(409); // Correct status code
-    echo json_encode(["error" => "Phone number already registered"]); // Clear message
+    http_response_code(409); 
+    echo json_encode(["error" => "Phone number already registered"]); 
     exit();
 }
 $checkStmt->close();

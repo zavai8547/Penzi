@@ -2,9 +2,9 @@
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With");
-header("Content-Type: application/json"); // Ensure response is JSON
+header("Content-Type: application/json"); 
 
-// Handle CORS preflight requests
+
 if ($_SERVER['REQUEST_METHOD'] == "OPTIONS") {
     http_response_code(200);
     exit();
@@ -31,14 +31,14 @@ switch ($action) {
         sendJsonResponse(['error' => 'Invalid action'], 400);
 }
 
-// Helper function to send JSON response
+
 function sendJsonResponse($data, $statusCode = 200) {
     http_response_code($statusCode);
     echo json_encode(["success" => true, "data" => $data]);
     exit();
 }
 
-// Fetch user growth trends
+
 function getUserGrowth($conn) {
     $query = "SELECT DATE(RegistrationDate) as date, COUNT(UserID) as total 
               FROM users 
@@ -54,7 +54,7 @@ function getUserGrowth($conn) {
     return $result->fetch_all(MYSQLI_ASSOC);
 }
 
-// Fetch match performance data
+
 function getMatchPerformance($conn) {
     $query = "SELECT DATE(m.RequestDate) as date, 
                      COUNT(m.MatchRequestID) as requests, 
@@ -75,7 +75,7 @@ function getMatchPerformance($conn) {
     return $result->fetch_all(MYSQLI_ASSOC);
 }
 
-// Fetch top locations
+
 function getTopLocations($conn) {
     $query = "SELECT town, COUNT(*) AS user_count 
               FROM users 
@@ -92,10 +92,10 @@ function getTopLocations($conn) {
     return $result->fetch_all(MYSQLI_ASSOC);
 }
 
-// Export Data as CSV
+
 function exportData($conn) {
-    $allowedTables = ['users', 'matchrequests', 'userconfirmations']; // Allowed tables
-    $table = $_GET['table'] ?? 'users'; // Default to 'users'
+    $allowedTables = ['users', 'matchrequests', 'userconfirmations']; 
+    $table = $_GET['table'] ?? 'users'; 
 
     if (!in_array($table, $allowedTables)) {
         sendJsonResponse(['error' => 'Invalid table name'], 400);
@@ -116,7 +116,7 @@ function exportData($conn) {
     $output = fopen('php://output', 'w');
 
     if ($result->num_rows > 0) {
-        fputcsv($output, array_keys($result->fetch_assoc())); // Headers
+        fputcsv($output, array_keys($result->fetch_assoc())); 
         $result->data_seek(0);
         
         while ($row = $result->fetch_assoc()) {

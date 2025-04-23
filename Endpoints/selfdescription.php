@@ -2,18 +2,18 @@
 require_once '/var/www/html/config/db.php';
 
 header("Content-Type: application/json");
-header("Access-Control-Allow-Origin: *"); // Be cautious with this in production
+header("Access-Control-Allow-Origin: *"); 
 header("Access-Control-Allow-Methods: POST, OPTIONS");
-header("Access-Control-Allow-Headers: Content-Type, Authorization"); // Removed Authorization header
+header("Access-Control-Allow-Headers: Content-Type, Authorization"); 
 header("Access-Control-Allow-Credentials: true");
 
-// Handle preflight requests
+
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     http_response_code(200);
     exit();
 }
 
-// Allow only POST requests
+
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     echo json_encode(["error" => "Invalid request method"]);
     exit();
@@ -27,7 +27,7 @@ if (json_last_error() !== JSON_ERROR_NONE) {
     exit();
 }
 
-// Validate required fields
+
 if (!isset($data['phone']) || !isset($data['message'])) {
     echo json_encode(["error" => "Missing phone number or message field"]);
     exit();
@@ -63,16 +63,16 @@ if (!$stmt) {
     exit();
 }
 
-$stmt->bind_param("si", $description, $user_id); // Use $user_id, not $auth_user_id
+$stmt->bind_param("si", $description, $user_id); 
 $stmt->execute();
 
 if ($stmt->affected_rows > 0) {
-    // Modified response message
+    
     echo json_encode([
-        "message" => "You are now registered for dating.\nTo search for a MPENZI, SMS match#age#town to 22141 and meet the person of\nyour dreams.\nE.g., match#23-25#Kisumu"
+        "message" => "You are now registered for dating.\nTo search for a MPENZI, Send match#age#town to and meet the person of\nyour dreams.\nE.g., match#23-25#Kisumu"
     ]);
 } else {
-    echo json_encode(["error" => "No changes made or user not found"]);
+    echo json_encode(["error" => "No users found "]);
 }
 
 $stmt->close();

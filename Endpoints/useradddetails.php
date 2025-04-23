@@ -7,13 +7,13 @@ header("Access-Control-Allow-Methods: POST, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type, Authorization");
 header("Access-Control-Allow-Credentials: true");
 
-// Handle preflight requests
+
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     http_response_code(200);
     exit();
 }
 
-// Allow only POST requests
+
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     echo json_encode(["error" => "Invalid request method"]);
     exit();
@@ -36,7 +36,7 @@ if (!isset($data['phone']) || !isset($data['message'])) {
 $phone = trim($data['phone']);
 $message = trim($data['message']);
 
-// Ensure phone exists and fetch UserID
+
 $checkStmt = $conn->prepare("SELECT UserID FROM users WHERE PhoneNumber = ?");
 if (!$checkStmt) {
     echo json_encode(["error" => "SQL Prepare Error: " . $conn->error]);
@@ -56,7 +56,7 @@ $checkStmt->bind_result($user_id);
 $checkStmt->fetch();
 $checkStmt->close();
 
-// Parse message
+
 $parts = explode("#", $message);
 
 if (count($parts) < 6) {
@@ -64,14 +64,14 @@ if (count($parts) < 6) {
     exit();
 }
 
-// Extract values
+
 $education = trim($parts[1]);
 $profession = trim($parts[2]);
 $marital_status = trim($parts[3]);
 $religion = trim($parts[4]);
 $ethnicity = trim($parts[5]);
 
-// Insert into database
+// add to the database
 try {
     $stmt = $conn->prepare("
         INSERT INTO user_additional_details 

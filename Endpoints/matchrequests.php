@@ -2,7 +2,7 @@
 require_once '/var/www/html/config/db.php';
 // require '../auth_middleware.php';
 
-// Handle preflight requests
+
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     header("Access-Control-Allow-Origin: http://localhost:3000");
     header("Access-Control-Allow-Methods: POST, OPTIONS");
@@ -18,14 +18,13 @@ header("Access-Control-Allow-Methods: POST, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type, Authorization");
 header("Access-Control-Allow-Credentials: true");
 
-// Allow only POST requests
+
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     http_response_code(405);
     echo json_encode(["error" => "Method Not Allowed"]);
     exit();
 }
 
-// Get input data
 $json = file_get_contents('php://input');
 $data = json_decode($json, true);
 
@@ -82,7 +81,7 @@ try {
     
     echo json_encode([
         "message" => "Match request processed successfully",
-        "total_matches" => 0, // Implement actual matching logic
+        "total_matches" => 0, 
         "matches" => []
     ]);
 

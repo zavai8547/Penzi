@@ -10,7 +10,7 @@ function App() {
     const [authToken, setAuthToken] = useState("YOUR_AUTH_TOKEN_HERE");
 
     
-     const welcomeMessage = "Welcome penzi dating wareva to register sms penzi";
+    //  const welcomeMessage = "Welcome penzi dating wareva to register sms penzi";
 
     const sendMessage = async () => {
         if (!input.trim()) return;
