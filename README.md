@@ -28,7 +28,7 @@ Use a MySQL client like DBeaver to import the database:
 In your db.php file, use the following credentials:
   MYSQL_HOST=database
 MYSQL_USER=root
-MYSQL_PASSWORD=Rodney
+MYSQL_PASSWORD=rodney
 MYSQL_DB=penzi
  
 4. **Run the Application**
