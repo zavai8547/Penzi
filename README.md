@@ -12,14 +12,35 @@ Here is how the UI looks like:
 
  **How it works:**  
 The user activates the bot by sending **"PENZI"**, then follows the instructions given by the system.
-  2. Admin Dashboard for:
-     - User management page: here is how it looks like ![UI Preview](screenshots/usermanagment.png)
-     **How it works:**  
-The admin can delete the users from the system completely or edit the users information using the buttons on the ui.
-     - Match requests viewing. Allows the admin to view all match requests being made by the users.Here is how the ui looks like:![UI Preview](screenshots/requests.png)
+### 2️⃣ Admin Dashboard
 
-     - Real-time reports and analytics: Shows user growth in graphs and also shows tops locations where matchs are made. It also allows admins to download an exell docuent of all users. Here is how the ui looks like:
-      ![UI Preview](screenshots/reports.png)
+The Admin Dashboard includes the following functionalities:
+
+---
+
+#### 🧑‍💼 User Management Page  
+Here is how it looks:  
+![User Management UI](screenshots/usermanagment.png)
+
+**How it works:**  
+The admin can delete users from the system or edit user information using the buttons on the UI.
+
+---
+
+#### 💘 Match Requests Viewing  
+Allows the admin to view all match requests made by users.  
+
+Here is how the UI looks:  
+![Match Requests UI](screenshots/requests.png)
+
+---
+
+####  Real-Time Reports and Analytics  
+Shows user growth using graphs and highlights top locations where matches are made.  
+Admins can also download an Excel document of all users.
+
+Here is how the UI looks:  
+![Reports and Analytics UI](screenshots/reports.png)
 
 ## Technologies Used
 - **Frontend**: React
