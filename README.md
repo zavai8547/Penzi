@@ -1,6 +1,6 @@
 # PENZI
 
-PENZI is a messaging, matchmaking and dating system designed to facilitate structured, SMS-based communication between users and the system. It features user and admin dashboards and a lightweight PHP backend integrated with a MySQL database.
+PENZI is a matchmaking and dating system designed to facilitate structured, SMS-based communication between users and the system in order to mathone user with a prospective partner. It features user and admin dashboards and a lightweight PHP backend integrated with a MySQL database.
 
 ## Features
 - **Dashboard Interface**:
