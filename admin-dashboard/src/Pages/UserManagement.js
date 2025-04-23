@@ -96,12 +96,12 @@ const UserManagement = () => {
                 <div style={formContainer}>
                     <h2>Edit User</h2>
                     <form onSubmit={(e) => { e.preventDefault(); handleUpdate(); }}>
-                        <input style={inputStyle} type="text" name="Name" value={formData.name} onChange={handleInputChange} required />
-                        <input style={inputStyle} type="number" name="Age" value={formData.Age} onChange={handleInputChange} required />
-                        <input style={inputStyle} type="text" name="Gender" value={formData.Gender} onChange={handleInputChange} required />
-                        <input style={inputStyle} type="text" name="County" value={formData.County} onChange={handleInputChange} required />
-                        <input style={inputStyle} type="text" name="Town" value={formData.Town} onChange={handleInputChange} required />
-                        <input style={inputStyle} type="text" name="PhoneNumber" value={formData.PhoneNumber} onChange={handleInputChange} required />
+                        <input style={inputStyle} type="text" Name="Name" value={formData.name} onChange={handleInputChange} required />
+                        <input style={inputStyle} type="number" Name="Age" value={formData.Age} onChange={handleInputChange} required />
+                        <input style={inputStyle} type="text" Name="Gender" value={formData.Gender} onChange={handleInputChange} required />
+                        <input style={inputStyle} type="text" Name="County" value={formData.County} onChange={handleInputChange} required />
+                        <input style={inputStyle} type="text" Name="Town" value={formData.Town} onChange={handleInputChange} required />
+                        <input style={inputStyle} type="text" Name="PhoneNumber" value={formData.PhoneNumber} onChange={handleInputChange} required />
                         <button style={submitButton} type="submit">Update</button>
                         <button style={cancelButton} type="button" onClick={() => setEditingUser(null)}>Cancel</button>
                     </form>

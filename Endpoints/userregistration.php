@@ -1,6 +1,6 @@
 <?php
 // CORS Headers — must be at the top before any other code
-header("Access-Control-Allow-Origin: http://localhost:3002"); 
+header("Access-Control-Allow-Origin: http://localhost:3002");
 header("Access-Control-Allow-Methods: POST, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type, Authorization");
 header("Access-Control-Allow-Credentials: true");
@@ -73,7 +73,7 @@ if (!is_numeric($age)) {
 // Clean phone number
 $phoneNumber = preg_replace('/\D/', '', $phoneNumber);
 if (strlen($phoneNumber) === 9) {
-    $phoneNumber = '0' . $phoneNumber; 
+    $phoneNumber = '0' . $phoneNumber;
 }
 if (!preg_match('/^07\d{8}$/', $phoneNumber)) {
     http_response_code(400);
@@ -89,8 +89,8 @@ $checkStmt->store_result();
 
 if ($checkStmt->num_rows > 0) {
     $checkStmt->close();
-    http_response_code(409);
-    echo json_encode(["error" => "Phone number already registered."]);
+    http_response_code(409); // Correct status code
+    echo json_encode(["error" => "Phone number already registered"]); // Clear message
     exit();
 }
 $checkStmt->close();
@@ -112,7 +112,7 @@ try {
 
     if ($stmt->execute()) {
         echo json_encode([
-            "message" => "Your profile has been created successfully, $name. Age: $age. details#levelOfEducation#profession#maritalStatus#religion#ethnicity",
+            "message" => "Your profile has been created successfully, $name. Age: $age please sms: details#levelOfEducation#profession#maritalStatus#religion#ethnicity",
             "phone" => $phoneNumber,
             "age" => $age,
         ]);
