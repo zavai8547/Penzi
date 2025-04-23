@@ -23,7 +23,7 @@ if (!isset($data['trigger']) || $data['trigger'] !== "NEXT") {
 $age = isset($data['age']) ? intval($data['age']) : null;
 $town = isset($data['town']) ? $data['town'] : null;
 
-// Pagination logic (cycles of 3)
+//  (cycles of 3)
 $page = isset($data['page']) ? intval($data['page']) : 1;
 $limit = 3;
 $offset = ($page - 1) * $limit;

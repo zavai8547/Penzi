@@ -4,7 +4,14 @@ PENZI is a matchmaking and dating system designed to facilitate structured, SMS-
 
 ## Features
 - **Dashboard Interface**:
-  1. Messaging UI (to facilitate messages between the user and the system)
+  ### 1️ Messaging UI  
+Facilitates messages between the user and the system.
+
+Here is how the UI looks like:  
+![UI Preview](screenshots/messaging-ui.png)
+
+ **How it works:**  
+The user activates the bot by sending **"PENZI"**, then follows the instructions given by the system.
   2. Admin Dashboard for:
      - User management
      - Match requests viewing
